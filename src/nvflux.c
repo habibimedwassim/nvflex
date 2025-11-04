@@ -28,7 +28,7 @@ static int find_nvidia_smi(void) {
     const char *candidates[] = { "/usr/bin/nvidia-smi", "/usr/local/bin/nvidia-smi", "/bin/nvidia-smi", NULL };
     for (int i = 0; candidates[i]; ++i) {
         if (access(candidates[i], X_OK) == 0) {
-            strncpy(nvsmipath, candidates[i], sizeof(nvsmipath)-1);
+            snprintf(nvsmipath, sizeof(nvsmipath), "%s", candidates[i]);
             return 0;
         }
     }
@@ -42,10 +42,17 @@ static int find_nvidia_smi(void) {
         char *colon = strchr(p, ':');
         if (colon) *colon = '\0';
         char cand[PATH_MAX];
+        if (strlen(p) + 12 > sizeof(cand)) {
+            if (!colon) break;
+            p = colon + 1;
+            continue;
+        }
         snprintf(cand, sizeof(cand), "%s/nvidia-smi", p);
         if (access(cand, X_OK) == 0) {
-            strncpy(nvsmipath, cand, sizeof(nvsmipath)-1);
-            return 0;
+            if (strlen(cand) < sizeof(nvsmipath)) {
+                snprintf(nvsmipath, sizeof(nvsmipath), "%s", cand);
+                return 0;
+            }
         }
         if (!colon) break;
         p = colon + 1;

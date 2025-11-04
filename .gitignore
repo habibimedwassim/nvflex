@@ -1,0 +1,29 @@
+# CMake build directory
+/build/
+
+# Compiled executables
+/nvflux
+/test_nvflux
+
+# Object files
+*.o
+
+# Editor-specific files
+.vscode/
+*.swp
+*~
+```// filepath: /home/wassim/Desktop/NvFlux/.gitignore
+# CMake build directory
+/build/
+
+# Compiled executables
+/nvflux
+/test_nvflux
+
+# Object files
+*.o
+
+# Editor-specific files
+.vscode/
+*.swp
+*~

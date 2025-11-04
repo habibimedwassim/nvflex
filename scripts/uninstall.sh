@@ -1,13 +1,28 @@
 #!/bin/sh
 set -e
 
+if [ "$(id -u)" -ne 0 ]; then
+    echo "This uninstaller must be run as root (use sudo)." >&2
+    exit 1
+fi
+
 OUT=/usr/local/bin/nvflux
+MANDIR=/usr/local/share/man/man1
+MAN_PAGE="$MANDIR/nvflux.1.gz"
 
 if [ -f "$OUT" ]; then
     echo "Removing $OUT"
     rm -f "$OUT"
 else
     echo "nvflux binary not found at $OUT"
+fi
+
+if [ -f "$MAN_PAGE" ]; then
+    echo "Removing man page $MAN_PAGE"
+    rm -f "$MAN_PAGE"
+    if command -v mandb >/dev/null 2>&1; then
+        mandb >/dev/null 2>&1 || true
+    fi
 fi
 
 # Remove installer user's state dir

@@ -1,4 +1,4 @@
-# nvflux
+# NvFlux
 
 A minimal, secure setuid-root helper for unprivileged NVIDIA GPU profile management.
 
